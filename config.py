@@ -1,13 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
--------------------------------------------------
-   @File Name:     config.py
-   @Author:        Luyao.zhang
-   @Date:          2023/5/16
-   @Description: configuration file
--------------------------------------------------
-"""
 from pathlib import Path
 import sys
 

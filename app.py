@@ -1,13 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-"""
--------------------------------------------------
-   @File Name:     app.py
-   @Author:        Luyao.zhang
-   @Date:          2023/5/15
-   @Description:
--------------------------------------------------
-"""
+
 from pathlib import Path
 from PIL import Image
 import streamlit as st
@@ -17,17 +8,17 @@ from utils import load_model, infer_uploaded_image, infer_uploaded_video, infer_
 
 # setting page layout
 st.set_page_config(
-    page_title="Interactive Interface for YOLOv8",
+    page_title="Interface for YOLOv8",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
     )
 
 # main page heading
-st.title("Interactive Interface for YOLOv8")
+st.title("Interface for YOLOv8")
 
 # sidebar
-st.sidebar.header("DL Model Config")
+st.sidebar.header("Model Config")
 
 # model options
 task_type = st.sidebar.selectbox(
