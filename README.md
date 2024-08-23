@@ -1,6 +1,8 @@
-# YOLOv8 Streamlit App
+# YOLOv8 Streamlit Interface
 
-![YOLOv8-Streamlit-App](https://your-image-link.com/banner-image.jpg)
+
+YOLOv8 Streamlit Interface is a user-friendly web app for real-time object detection using YOLOv8. Built with Streamlit, it supports various YOLOv8 models and multiple input types, including images, videos, and webcam streams. This tool is perfect for researchers and developers who want an easy way to experiment with state-of-the-art object detection technology.
+
 
 ## Introduction
 
