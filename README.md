@@ -1,39 +1,54 @@
+# YOLOv8 Streamlit App
 
-<div align="center">
-
-# YOLOv8 Streamlit APP
-
-  <p>
-    <a align="center" href="https://ultralytics.com/yolov8" target="_blank">
-      <img width="50%" src="pic_bed/banner-yolov8.png"></a>
-  </p>
-
-<br>
-
+![YOLOv8-Streamlit-App](https://your-image-link.com/banner-image.jpg)
 
 ## Introduction
-This repository supply a user-friendly interactive interface for [YOLOv8](https://github.com/ultralytics/ultralytics) and the interface is powered by [Streamlit](https://github.com/streamlit/streamlit). It could serve as a resource for future reference while working on your own projects.
+
+Welcome to the YOLOv8 Streamlit App! This project provides a user-friendly, interactive interface for [YOLOv8](https://github.com/ultralytics/ultralytics) object detection using [Streamlit](https://github.com/streamlit/streamlit). This tool is ideal for researchers, developers, and hobbyists looking to experiment with object detection models in a simplified manner.
 
 ## Features
-- Feature1: Object detection task.
-- Feature2: Multiple detection models. `yolov8n`, `yolov8s`, `yolov8m`, `yolov8l`, `yolov8x`
-- Feature3: Multiple input formats. `Image`, `Video`, `Webcam`
+
+- **Object Detection**: Perform real-time object detection tasks using state-of-the-art YOLOv8 models.
+- **Multiple Detection Models**: Easily switch between different YOLOv8 model sizes:
+  - `yolov8n` (Nano)
+  - `yolov8s` (Small)
+  - `yolov8m` (Medium)
+  - `yolov8l` (Large)
+  - `yolov8x` (Extra Large)
+- **Multiple Input Formats**: Supports detection on various inputs:
+  - `Image` files
+  - `Video` files
+  - `Webcam` for live detection
 
 ## Installation
-### Create a new conda environment
-```commandline
-# create
+
+### Prerequisites
+
+- [Anaconda](https://www.anaconda.com/products/distribution) installed on your system.
+- Basic knowledge of Python and command-line tools.
+
+### 1. Create a New Conda Environment
+
+First, create and activate a conda environment named `yolov8-streamlit`:
+
+```bash
+# Create a new environment
 conda create -n yolov8-streamlit python=3.8 -y
 
-# activate
+# Activate the environment
 conda activate yolov8-streamlit
 ```
-### Clone repository
-```commandline
-git clone https://github.com/JackDance/YOLOv8-streamlit-app
+
+### 2. Clone the repo
+
+```bash
+git clone https://github.com/fouzul-hassan/yolov8-streamlit-interface
+cd yolov8-streamlit-interface
+
 ```
 
-### Install packages
+
+### 3. Install packages
 ```commandline
 # yolov8 dependencies
 pip install ultralytics
@@ -41,7 +56,7 @@ pip install ultralytics
 # Streamlit dependencies
 pip install streamlit
 ```
-### Download Pre-trained YOLOv8 Detection Weights
+### 4. Download Pre-trained YOLOv8 Detection Weights
 Create a directory named `weights` and create a subdirectory named `detection` and save the downloaded YOLOv8 object detection weights inside this directory. The weight files can be downloaded from the table below.
 
 | Model                                                                                | size<br><sup>(pixels) | mAP<sup>val<br>50-95 | Speed<br><sup>CPU ONNX<br>(ms) | Speed<br><sup>A100 TensorRT<br>(ms) | params<br><sup>(M) | FLOPs<br><sup>(B) |
@@ -53,17 +68,11 @@ Create a directory named `weights` and create a subdirectory named `detection` a
 | [YOLOv8x](https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8x.pt) | 640                   | 53.9                 | 479.1                          | 3.53                                | 68.2               | 257.8             |
 
 
-## Run
+### 5. Running the application
 ```commandline
 streamlit run app.py
 ```
 Then will start the Streamlit server and open your web browser to the default Streamlit page automatically.
-
-
-## TODO List
-- Add `Tracking` capability.
-- Add `Classification` capability.
-- Add `Pose estimation` capability.
 
 
 ***
