@@ -1,110 +1,77 @@
-# Python In-built packages
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+-------------------------------------------------
+   @File Name:     app.py
+   @Author:        Luyao.zhang
+   @Date:          2023/5/15
+   @Description:
+-------------------------------------------------
+"""
 from pathlib import Path
-import PIL
-
-# External packages
+from PIL import Image
 import streamlit as st
 
-# Local Modules
-import settings
-import helper
+import config
+from utils import load_model, infer_uploaded_image, infer_uploaded_video, infer_uploaded_webcam
 
-# Setting page layout
+# setting page layout
 st.set_page_config(
-    page_title="Object Detection using YOLOv8",
+    page_title="Interactive Interface for YOLOv8",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
+    )
+
+# main page heading
+st.title("Interactive Interface for YOLOv8")
+
+# sidebar
+st.sidebar.header("DL Model Config")
+
+# model options
+task_type = st.sidebar.selectbox(
+    "Select Task",
+    ["Detection"]
 )
 
-# Main page heading
-st.title("Object Detection And Tracking using YOLOv8")
-
-# Sidebar
-st.sidebar.header("ML Model Config")
-
-# Model Options
-model_type = st.sidebar.radio(
-    "Select Task", ['Detection', 'Segmentation'])
+model_type = None
+if task_type == "Detection":
+    model_type = st.sidebar.selectbox(
+        "Select Model",
+        config.DETECTION_MODEL_LIST
+    )
+else:
+    st.error("Currently only 'Detection' function is implemented")
 
 confidence = float(st.sidebar.slider(
-    "Select Model Confidence", 25, 100, 40)) / 100
+    "Select Model Confidence", 30, 100, 50)) / 100
 
-# Selecting Detection Or Segmentation
-if model_type == 'Detection':
-    model_path = Path(settings.DETECTION_MODEL)
-elif model_type == 'Segmentation':
-    model_path = Path(settings.SEGMENTATION_MODEL)
+model_path = ""
+if model_type:
+    model_path = Path(config.DETECTION_MODEL_DIR, str(model_type))
+else:
+    st.error("Please Select Model in Sidebar")
 
-# Load Pre-trained ML Model
+# load pretrained DL model
 try:
-    model = helper.load_model(model_path)
-except Exception as ex:
-    st.error(f"Unable to load model. Check the specified path: {model_path}")
-    st.error(ex)
+    model = load_model(model_path)
+except Exception as e:
+    st.error(f"Unable to load model. Please check the specified path: {model_path}")
 
+# image/video options
 st.sidebar.header("Image/Video Config")
-source_radio = st.sidebar.radio(
-    "Select Source", settings.SOURCES_LIST)
+source_selectbox = st.sidebar.selectbox(
+    "Select Source",
+    config.SOURCES_LIST
+)
 
 source_img = None
-# If image is selected
-if source_radio == settings.IMAGE:
-    source_img = st.sidebar.file_uploader(
-        "Choose an image...", type=("jpg", "jpeg", "png", 'bmp', 'webp'))
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        try:
-            if source_img is None:
-                default_image_path = str(settings.DEFAULT_IMAGE)
-                default_image = PIL.Image.open(default_image_path)
-                st.image(default_image_path, caption="Default Image",
-                         use_column_width=True)
-            else:
-                uploaded_image = PIL.Image.open(source_img)
-                st.image(source_img, caption="Uploaded Image",
-                         use_column_width=True)
-        except Exception as ex:
-            st.error("Error occurred while opening the image.")
-            st.error(ex)
-
-    with col2:
-        if source_img is None:
-            default_detected_image_path = str(settings.DEFAULT_DETECT_IMAGE)
-            default_detected_image = PIL.Image.open(
-                default_detected_image_path)
-            st.image(default_detected_image_path, caption='Detected Image',
-                     use_column_width=True)
-        else:
-            if st.sidebar.button('Detect Objects'):
-                res = model.predict(uploaded_image,
-                                    conf=confidence
-                                    )
-                boxes = res[0].boxes
-                res_plotted = res[0].plot()[:, :, ::-1]
-                st.image(res_plotted, caption='Detected Image',
-                         use_column_width=True)
-                try:
-                    with st.expander("Detection Results"):
-                        for box in boxes:
-                            st.write(box.data)
-                except Exception as ex:
-                    # st.write(ex)
-                    st.write("No image is uploaded yet!")
-
-elif source_radio == settings.VIDEO:
-    helper.play_stored_video(confidence, model)
-
-elif source_radio == settings.WEBCAM:
-    helper.play_webcam(confidence, model)
-
-elif source_radio == settings.RTSP:
-    helper.play_rtsp_stream(confidence, model)
-
-elif source_radio == settings.YOUTUBE:
-    helper.play_youtube_video(confidence, model)
-
+if source_selectbox == config.SOURCES_LIST[0]: # Image
+    infer_uploaded_image(confidence, model)
+elif source_selectbox == config.SOURCES_LIST[1]: # Video
+    infer_uploaded_video(confidence, model)
+elif source_selectbox == config.SOURCES_LIST[2]: # Webcam
+    infer_uploaded_webcam(confidence, model)
 else:
-    st.error("Please select a valid source type!")
+    st.error("Currently only 'Image' and 'Video' source are implemented")
